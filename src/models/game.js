@@ -6,7 +6,8 @@ module.exports = (sequelize) => {
   // Stores metadata for a hosted game instance or configuration.
   return sequelize.define('Game', {
     name: { type: DataTypes.STRING, allowNull: false },
-    status: { type: DataTypes.ENUM('draft', 'active', 'archived'), defaultValue: 'draft' },
+    port: { type: DataTypes.INTEGER },
+    status: { type: DataTypes.ENUM('draft', 'open', 'closed'), defaultValue: 'draft' },
     description: { type: DataTypes.TEXT },
   }, {
     tableName: 'games',
