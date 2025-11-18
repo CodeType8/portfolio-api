@@ -17,11 +17,5 @@ module.exports = (sequelize) => {
     tableName: 'invitation_tokens',
     timestamps: true,
     underscored: true,
-    indexes: [
-      { fields: ['email'] },
-      { fields: ['token'] },
-      { fields: ['brand_id'] },
-      { fields: ['branch_id'] }
-    ]
   });
 };
