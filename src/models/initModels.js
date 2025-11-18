@@ -55,9 +55,9 @@ module.exports = (sequelize) => {
   models.Skill.belongsTo(models.Career, { foreignKey: 'career_id' });
 
 
-  // 🔹 Career ↔ Recipe
-  models.Category.hasMany(models.Recipe, { foreignKey: 'career_id' });
-  models.Recipe.belongsTo(models.Category, { foreignKey: 'career_id' });
+  // 🔹 Category ↔ Recipe
+  models.Category.hasMany(models.Recipe, { foreignKey: 'category_id' });
+  models.Recipe.belongsTo(models.Category, { foreignKey: 'category_id' });
 
   return models;
 };
