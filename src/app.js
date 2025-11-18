@@ -41,22 +41,9 @@ app.use((req, res, next) => {
 const models = initModels(sequelize);
 const deps = { sequelize, models };
 
-app.use('/api/master', require('./routes/master.routes')(deps));
 app.use('/api/auth', require('./routes/auth.routes')(deps));
 app.use('/api/users', require('./routes/user.routes')(deps));
 app.use('/api/portfolio', require('./routes/portfolio.routes')(deps));
-app.use('/api/user-roles', require('./routes/userRole.routes')(deps));
-app.use('/api/brands', require('./routes/brand.routes')(deps));
-app.use('/api/branchs', require('./routes/branch.routes')(deps));
-app.use('/api/warehouses', require('./routes/warehouse.routes')(deps));
-app.use('/api/suppliers', require('./routes/supplier.routes')(deps));
-app.use('/api/categories', require('./routes/category.routes')(deps));
-app.use('/api/items', require('./routes/item.routes')(deps));
-app.use('/api/inventories', require('./routes/inventory.routes')(deps));
-app.use('/api/inventory-log', require('./routes/inventoryChangeLog.routes')(deps));
-app.use('/api/cart', require('./routes/cart.routes')(deps));
-app.use('/api/orders', require('./routes/order.routes')(deps));
-app.use('/api/purchase-orders', require('./routes/purchaseOrder.routes')(deps));
 
 app.use(errorHandler);
 
