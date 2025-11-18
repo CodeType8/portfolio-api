@@ -44,6 +44,7 @@ const deps = { sequelize, models };
 app.use('/api/master', require('./routes/master.routes')(deps));
 app.use('/api/auth', require('./routes/auth.routes')(deps));
 app.use('/api/users', require('./routes/user.routes')(deps));
+app.use('/api/portfolio', require('./routes/portfolio.routes')(deps));
 app.use('/api/user-roles', require('./routes/userRole.routes')(deps));
 app.use('/api/brands', require('./routes/brand.routes')(deps));
 app.use('/api/branchs', require('./routes/branch.routes')(deps));
