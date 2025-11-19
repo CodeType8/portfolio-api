@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
     start_date: { type: DataTypes.DATEONLY, allowNull: false },
     end_date: { type: DataTypes.DATEONLY },
     is_current: { type: DataTypes.BOOLEAN, defaultValue: false },
-    summary: { type: DataTypes.TEXT },
+    description: { type: DataTypes.TEXT },
   }, {
     tableName: 'experiences',
     timestamps: true,

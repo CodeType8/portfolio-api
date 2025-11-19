@@ -16,7 +16,7 @@ module.exports = {
       start_date: { type: Sequelize.DATEONLY, allowNull: false },
       end_date: { type: Sequelize.DATEONLY },
       is_current: { type: Sequelize.BOOLEAN, defaultValue: false },
-      summary: { type: Sequelize.TEXT },
+      description: { type: Sequelize.TEXT },
       created_at: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
       updated_at: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
     });
