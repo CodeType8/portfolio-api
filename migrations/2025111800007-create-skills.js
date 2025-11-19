@@ -11,9 +11,7 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       name: { type: Sequelize.STRING(120), allowNull: false },
-      level: { type: Sequelize.ENUM('beginner', 'intermediate', 'advanced', 'expert'), defaultValue: 'intermediate' },
       category: { type: Sequelize.STRING(80) },
-      years_experience: { type: Sequelize.INTEGER },
       created_at: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
       updated_at: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
     });

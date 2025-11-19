@@ -11,7 +11,6 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       name: { type: Sequelize.STRING(180), allowNull: false },
-      role: { type: Sequelize.STRING(120) },
       description: { type: Sequelize.TEXT },
       tech_stack: { type: Sequelize.TEXT },
       link_url: { type: Sequelize.STRING },
