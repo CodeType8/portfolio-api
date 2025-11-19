@@ -2,9 +2,10 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('skills', {
+    await queryInterface.createTable('games', {
       id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
       name: { type: Sequelize.STRING(120), allowNull: false },
+      img_src: { type: Sequelize.TEXT },
       port: { type: Sequelize.INTEGER },
       status: { type: Sequelize.ENUM('draft', 'open', 'closed'), defaultValue: 'draft' },
       description: { type: Sequelize.TEXT },
@@ -13,6 +14,6 @@ module.exports = {
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('skills');
+    await queryInterface.dropTable('games');
   }
 };
