@@ -1,9 +1,9 @@
 'use strict';
 
-//Auth
+// Auth
 const User = require('./user');
 const InvitationToken = require('./invitationToken');
-const PasswordResetTokens = require('./passwordResetTokens')
+const PasswordResetTokens = require('./passwordResetTokens');
 
 // Portfolio
 const Career = require('./career');
@@ -19,6 +19,14 @@ const Recipe = require('./recipe');
 // Game Server
 const Game = require('./game');
 
+// Reference sample payloads grouped by the same domain categories as above.
+const sampleData = require('./sampleData');
+
+/**
+ * Initialize and associate all Sequelize models used by the API.
+ * @param {import('sequelize').Sequelize} sequelize - Active Sequelize instance.
+ * @returns {object} models - Collection of initialized models keyed by name.
+ */
 module.exports = (sequelize) => {
   const models = {
     User: User(sequelize),
@@ -61,3 +69,6 @@ module.exports = (sequelize) => {
 
   return models;
 };
+
+// Export structured samples so callers can seed or document the API easily.
+module.exports.sampleData = sampleData;

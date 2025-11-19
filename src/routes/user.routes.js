@@ -1,29 +1,30 @@
 const router = require('express').Router();
 const requireAuth = require('../middlewares/auth');
 /**
- * API Instructions
- * 
- * Endpoint: GET /api/users/:user_id
- *   Method: GET
- *   Body: none
- *   Params: { user_id: number }
- * 
- * Endpoint: PUT /api/users/update/:user_id
- *   Method: PUT
- *   Body: { first_name?: string, last_name?: string, email?: string, status?: string, ... }
- *   Params: { user_id: number }
+ * User API Usage
  *
- * Endpoint: PUT /api/users/password/:user_id
- *   Method: PUT
- *   Body: { current_pw: string, new_pw: string }
- *   Params: { user_id: number }
- * 
- * Endpoint: PUT /api/users/:user_id
- *   Method: PUT
- *   Body: { status?: string }
- *   Params: { user_id: number }
- * 
- * Notes: The delete handler additionally expects brand_id and branch_id parameters to authorize the request when disabling a user role.
+ * GET /api/users/:user_id
+ *   - Purpose: Retrieve a single user profile by id.
+ *   - Path params: { user_id: number }
+ *   - Auth: Required; caller must be authenticated.
+ *
+ * PUT /api/users/update/:user_id
+ *   - Purpose: Update profile attributes for the specified user.
+ *   - Path params: { user_id: number }
+ *   - Body: { first_name?: string, last_name?: string, email?: string, status?: 'invited'|'verified'|'disabled', phone_number?: string }
+ *   - Auth: Required; typically the owner or an admin.
+ *
+ * PUT /api/users/password/:user_id
+ *   - Purpose: Change the password after validating the current one.
+ *   - Path params: { user_id: number }
+ *   - Body: { current_pw: string, new_pw: string }
+ *   - Auth: Required; caller must be the account owner.
+ *
+ * PUT /api/users/:user_id
+ *   - Purpose: Soft-delete or disable a user account within a brand/branch context.
+ *   - Path params: { user_id: number }
+ *   - Body: { status?: 'disabled', brand_id?: number, branch_id?: number }
+ *   - Auth: Required; generally restricted to admins.
  */
 
 module.exports = (deps) => {
