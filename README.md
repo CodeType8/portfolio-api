@@ -1,6 +1,9 @@
 # Portfolio API
 A production-ready Express + PostgreSQL backend for managing authenticated users, invite flows, and rich portfolio content (careers, projects, skills, education, games, and bars). The service layers HTTP transport, business logic, and persistence so that controllers stay thin, services reusable, and Sequelize models authoritative.
 
+Backend: https://api.codetypeweb.com/
+Frontend: https://codetypeweb.com/
+
 ## Contents
 - [Architecture Overview](#architecture-overview)
 - [Tech Stack](#tech-stack)
