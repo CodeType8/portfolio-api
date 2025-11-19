@@ -13,7 +13,7 @@ const Education = require('./education');
 const Skill = require('./skill');
 
 // Bar Menu
-const Category = require('./category');
+const Base = require('./base');
 const Recipe = require('./recipe');
 
 // Game Server
@@ -29,7 +29,7 @@ module.exports = (sequelize) => {
     Project: Project(sequelize),
     Education: Education(sequelize),
     Skill: Skill(sequelize),
-    Category: Category(sequelize),
+    Base: Base(sequelize),
     Recipe: Recipe(sequelize),
     Game: Game(sequelize),
   };
@@ -55,9 +55,9 @@ module.exports = (sequelize) => {
   models.Skill.belongsTo(models.Career, { foreignKey: 'career_id' });
 
 
-  // 🔹 Category ↔ Recipe
-  models.Category.hasMany(models.Recipe, { foreignKey: 'category_id' });
-  models.Recipe.belongsTo(models.Category, { foreignKey: 'category_id' });
+  // 🔹 Base ↔ Recipe
+  models.Base.hasMany(models.Recipe, { foreignKey: 'base_id' });
+  models.Recipe.belongsTo(models.Base, { foreignKey: 'base_id' });
 
   return models;
 };
