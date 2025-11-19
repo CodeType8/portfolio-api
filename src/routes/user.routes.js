@@ -7,7 +7,6 @@ const requireAuth = require('../middlewares/auth');
 module.exports = (deps) => {
   // Load the user controller containing membership management logic.
   const ctrl = require('../controllers/user.controller')(deps);
-  const settingCtrl = require('../controllers/userSetting.controller')(deps);
 
   /**
    * GET /api/users/:user_id
