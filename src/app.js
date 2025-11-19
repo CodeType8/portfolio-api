@@ -45,6 +45,8 @@ app.use('/api/auth', require('./routes/auth.routes')(deps));
 app.use('/api/users', require('./routes/user.routes')(deps));
 app.use('/api/portfolio', require('./routes/portfolio.routes')(deps));
 app.use('/api/bar', require('./routes/bar.routes')(deps));
+app.use('/api/bases', require('./routes/base.routes')(deps));
+app.use('/api/games', require('./routes/game.routes')(deps));
 
 app.use(errorHandler);
 
