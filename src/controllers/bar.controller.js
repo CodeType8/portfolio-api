@@ -52,7 +52,7 @@ module.exports = (deps) => {
       const recipeId = toInteger(req.params.recipe_id);
       if (!recipeId) return fail(res, 'Invalid recipe id', 400);
 
-      // Step 2: Retrieve the recipe including its category.
+      // Step 2: Retrieve the recipe including its base.
       const recipe = await barService.getRecipeById(recipeId);
       if (!recipe) return fail(res, 'Recipe not found', 404);
       return ok(res, recipe);
@@ -66,7 +66,7 @@ module.exports = (deps) => {
     try {
       // Step 1: Build a normalized payload from the incoming body values.
       const payload = {
-        category_id: normalizeInteger(req.body.category_id),
+        base_id: normalizeInteger(req.body.base_id),
         name: req.body.name,
         description: req.body.description,
         ingredients: req.body.ingredients,
@@ -82,8 +82,8 @@ module.exports = (deps) => {
       if (!payload.name || typeof payload.name !== 'string') {
         return fail(res, 'Recipe name is required', 400);
       }
-      if (payload.category_id === undefined) {
-        return fail(res, 'Category id is required', 400);
+      if (payload.base_id === undefined) {
+        return fail(res, 'Base id is required', 400);
       }
 
       // Step 2: Create and return the recipe using the service layer.
@@ -102,7 +102,7 @@ module.exports = (deps) => {
       if (!recipeId) return fail(res, 'Invalid recipe id', 400);
 
       const payload = {
-        category_id: normalizeInteger(req.body.category_id),
+        base_id: normalizeInteger(req.body.base_id),
         name: req.body.name,
         description: req.body.description,
         ingredients: req.body.ingredients,

@@ -2,7 +2,7 @@
 const { buildListQueryOptions, buildPaginationOptions } = require('../utils/queryBuilder');
 
 module.exports = ({ models }) => {
-  const { Recipe, Category } = models;
+  const { Recipe, Base } = models;
 
   // Normalizes boolean-like inputs coming from query parameters.
   const parseBoolean = (value) => {
@@ -22,7 +22,7 @@ module.exports = ({ models }) => {
     // Step 2: Build a dynamic where/order clause using shared query utilities.
     const listOptions = buildListQueryOptions(query, {
       filterFields: {
-        category_id: { field: 'category_id', transform: (val) => {
+        base_id: { field: 'base_id', transform: (val) => {
           const parsed = Number(val);
           return Number.isInteger(parsed) ? parsed : null;
         } },
@@ -44,17 +44,17 @@ module.exports = ({ models }) => {
     const result = await Recipe.findAndCountAll({
       ...listOptions,
       ...paginationOptions,
-      include: [{ model: Category, attributes: ['id', 'name'] }],
+      include: [{ model: Base, attributes: ['id', 'name'] }],
     });
 
     // Step 4: Return both the raw query result and the computed pagination meta input.
     return { result, pagination };
   };
 
-  // Retrieves a single recipe with its category relation hydrated.
+  // Retrieves a single recipe with its base relation hydrated.
   const getRecipeById = (id) => Recipe.findOne({
     where: { id },
-    include: [{ model: Category, attributes: ['id', 'name'] }],
+    include: [{ model: Base, attributes: ['id', 'name'] }],
   });
 
   // Persists a brand-new recipe row using the provided payload values.

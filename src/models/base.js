@@ -1,14 +1,14 @@
 'use strict';
 const { DataTypes } = require('sequelize');
 
-// Provides a simple category taxonomy used by bar menu features.
+// Provides a simple base taxonomy used by bar menu features.
 module.exports = (sequelize) => {
-  // Columns capture the display name and optional description for a category.
-  return sequelize.define('Category', {
+  // Columns capture the display name and optional description for a base.
+  return sequelize.define('Base', {
     name: { type: DataTypes.STRING, allowNull: false },
     description: { type: DataTypes.TEXT },
   }, {
-    tableName: 'categories',
+    tableName: 'bases',
     timestamps: true,
     underscored: true,
   });

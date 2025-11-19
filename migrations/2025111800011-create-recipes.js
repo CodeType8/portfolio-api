@@ -4,10 +4,10 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('recipes', {
       id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-      category_id: {
+      base_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'categories', key: 'id' },
+        references: { model: 'bases', key: 'id' },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
@@ -18,7 +18,6 @@ module.exports = {
       glass_type: { type: Sequelize.STRING(120) },
       garnish: { type: Sequelize.STRING(180) },
       is_alcoholic: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true },
-      prep_time_minutes: { type: Sequelize.INTEGER },
       abv: { type: Sequelize.DECIMAL(5, 2) },
       created_at: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
       updated_at: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
