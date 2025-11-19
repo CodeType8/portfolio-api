@@ -60,11 +60,7 @@ src/
    - Ensure the user has rights to create/alter tables (Sequelize migrations expect this).
 3. **Seed environment variables**
    - Copy `.env.example` (create one if absent) to `.env` and fill out the variables listed below.
-4. **Run the migration**
-   ```bash
-   npx sequelize-cli db:migrate
-   ```
-5. **Run the development server**
+4. **Run the development server**
    ```bash
    npm run dev
    ```
@@ -119,6 +115,151 @@ _See `package.json` for the authoritative list._【F:package.json†L5-L8】
 ## Email & Notification Layouts
 - Invitation, welcome, password reset, and update confirmation emails are fully responsive HTML snippets kept in `src/layouts/email.js`. Services call into these helpers, which then pipe through the configured Nodemailer transporter defined in `src/config/emailConfig`. This keeps copy centralized and auditable for legal/security reviews.【F:src/layouts/email.js†L1-L96】【F:src/config/config.js†L1-L14】
 
+## Example Next.js 15 Integration
+The snippet below shows how a Next.js 15 (React + Tailwind) client can fetch the authenticated portfolio by reusing the backend's layered philosophy (service → hook → page). Comments explain every function, logic block, and key variable.
+
+```javascript
+// frontend/lib/api/portfolioService.js
+import axios from 'axios';
+
+// fetchPortfolio contacts the Express API to retrieve the logged-in user's portfolio snapshot.
+export const fetchPortfolio = async () => {
+  // Step 1: Prepare the Axios instance with credentials for cookie-based JWTs.
+  const client = axios.create({ baseURL: process.env.NEXT_PUBLIC_API_URL, withCredentials: true });
+  // Step 2: Execute the GET request and return the typed payload to the caller.
+  const response = await client.get('/api/portfolio/me');
+  // Step 3: Return only the useful data envelope used throughout the UI layer.
+  return response.data?.data;
+};
+```
+
+```javascript
+// frontend/hooks/usePortfolio.js
+import { useEffect, useState } from 'react';
+import { fetchPortfolio } from '../lib/api/portfolioService';
+
+// usePortfolio orchestrates loading state, cached data, and error reporting for portfolio views.
+export const usePortfolio = () => {
+  // portfolio stores the server response, error keeps API failures for UI messaging, loading toggles skeletons.
+  const [portfolio, setPortfolio] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Step 1: Fire the fetch on mount and handle cleanup if the component unmounts mid-request.
+  useEffect(() => {
+    let active = true;
+
+    // Step 2: Wrap async logic for readability and error handling.
+    const load = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchPortfolio();
+        // Step 3: Only update state if the hook is still mounted to avoid memory leaks.
+        if (active) setPortfolio(data);
+      } catch (err) {
+        if (active) setError(err);
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+
+    load();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  // Step 4: Expose the trio so UIs can render conditionally.
+  return { portfolio, error, loading };
+};
+```
+
+```javascript
+// frontend/components/PortfolioCard.jsx
+import React from 'react';
+
+// PortfolioCard presents a career summary, projects, and skills in a Tailwind-styled panel.
+export const PortfolioCard = ({ profile }) => {
+  // projects, skills, and experiences are derived arrays that drive the sub-sections.
+  const projects = profile?.projects ?? [];
+  const skills = profile?.skills ?? [];
+  const experiences = profile?.experiences ?? [];
+
+  return (
+    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-lg">
+      {/* Step 1: Top-level identity and headline */}
+      <header>
+        <h2 className="text-2xl font-semibold text-slate-900">{profile?.headline}</h2>
+        <p className="text-slate-600">{profile?.summary}</p>
+      </header>
+
+      {/* Step 2: Experiences timeline */}
+      <div className="mt-6 space-y-4">
+        {experiences.map((exp) => (
+          <article key={exp.id} className="rounded-xl bg-slate-50 p-4">
+            <h3 className="text-lg font-medium text-slate-900">{exp.title} @ {exp.company_name}</h3>
+            <p className="text-sm text-slate-600">{exp.start_date} → {exp.end_date ?? 'Present'}</p>
+            <p className="text-sm text-slate-500">{exp.description}</p>
+          </article>
+        ))}
+      </div>
+
+      {/* Step 3: Projects grid */}
+      <div className="mt-8 grid gap-4 md:grid-cols-2">
+        {projects.map((project) => (
+          <article key={project.id} className="rounded-xl border border-slate-200 p-4">
+            <h3 className="text-lg font-semibold text-slate-900">{project.name}</h3>
+            <p className="text-sm text-slate-600">{project.description}</p>
+            <p className="text-xs uppercase tracking-wide text-slate-500">{project.tech_stack}</p>
+          </article>
+        ))}
+      </div>
+
+      {/* Step 4: Skill pills */}
+      <div className="mt-8 flex flex-wrap gap-3">
+        {skills.map((skill) => (
+          <span key={skill.id} className="rounded-full bg-indigo-50 px-4 py-1 text-sm text-indigo-700">
+            {skill.name} · {skill.level}
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+};
+```
+
+```javascript
+// frontend/app/(dashboard)/portfolio/page.js
+import React from 'react';
+import { usePortfolio } from '../../../hooks/usePortfolio';
+import { PortfolioCard } from '../../../components/PortfolioCard';
+
+// PortfolioPage composes the hook and presentation component to render the authenticated portfolio.
+const PortfolioPage = () => {
+  // dataBundle unwraps the hook output for readability.
+  const { portfolio, error, loading } = usePortfolio();
+
+  // Step 1: Render skeletons while fetching data.
+  if (loading) {
+    return <div className="animate-pulse text-slate-500">Loading portfolio…</div>;
+  }
+
+  // Step 2: Provide actionable messaging when the API fails.
+  if (error) {
+    return <div className="text-red-600">Unable to load your portfolio right now.</div>;
+  }
+
+  // Step 3: Render the main card when data is ready.
+  return (
+    <main className="mx-auto max-w-5xl space-y-6 p-8">
+      <PortfolioCard profile={portfolio} />
+    </main>
+  );
+};
+
+export default PortfolioPage;
+```
+
 ### How it works
 1. **Service module** – `fetchPortfolio` centralizes API calls so the rest of the app only depends on one function. The comments outline each operational step.
 2. **Hook** – `usePortfolio` encapsulates `useState`/`useEffect` plumbing, ensuring UI components remain stateless and easy to test.
@@ -142,6 +283,10 @@ _See `package.json` for the authoritative list._【F:package.json†L5-L8】
 
 ## Refactoring & Future Enhancements
 1. **Configuration hardening** – Introduce a schema validator (e.g., `zod`) that fails fast when mandatory env vars are missing.
+2. **Rate limiting** – Layer a Redis-backed limiter on `/api/auth` endpoints to prevent brute-force login attempts.
+3. **Background jobs** – Move heavy email dispatches to a queue (BullMQ) to keep API responses snappy under load.
+4. **Observability** – Emit structured JSON logs and pipe them to OpenTelemetry for distributed tracing once multiple services collaborate.
+5. **Testing automation** – Add GitHub Actions workflows to lint, test, and run migrations on pull requests before deploying.
 2. **Rate limiting** – Layer a Redis-backed limiter on `/api/auth` endpoints to prevent brute-force login attempts.
 3. **Background jobs** – Move heavy email dispatches to a queue (BullMQ) to keep API responses snappy under load.
 4. **Observability** – Emit structured JSON logs and pipe them to OpenTelemetry for distributed tracing once multiple services collaborate.
