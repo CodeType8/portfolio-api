@@ -1,43 +1,44 @@
 const router = require('express').Router();
 const requireAuth = require('../middlewares/auth');
-/**
- * API Instructions
- * 
- * Endpoint: GET /api/users/:user_id
- *   Method: GET
- *   Body: none
- *   Params: { user_id: number }
- * 
- * Endpoint: PUT /api/users/update/:user_id
- *   Method: PUT
- *   Body: { first_name?: string, last_name?: string, email?: string, status?: string, ... }
- *   Params: { user_id: number }
- *
- * Endpoint: PUT /api/users/password/:user_id
- *   Method: PUT
- *   Body: { current_pw: string, new_pw: string }
- *   Params: { user_id: number }
- * 
- * Endpoint: PUT /api/users/:user_id
- *   Method: PUT
- *   Body: { status?: string }
- *   Params: { user_id: number }
- * 
- * Notes: The delete handler additionally expects brand_id and branch_id parameters to authorize the request when disabling a user role.
- */
 
+/**
+ * User profile endpoints documenting access patterns for API consumers.
+ */
 module.exports = (deps) => {
   // Load the user controller containing membership management logic.
   const ctrl = require('../controllers/user.controller')(deps);
-  const settingCtrl = require('../controllers/userSetting.controller')(deps);
 
-  // Retrieve a single user profile by identifier.
+  /**
+   * GET /api/users/:user_id
+   * - Purpose: Fetch a single user's profile by id.
+   * - Auth: Protected.
+   * - Params: { user_id }
+   */
   router.get('/:user_id', requireAuth, ctrl.get);
-  // Allow a user to update their own account details.
+
+  /**
+   * PUT /api/users/update/:user_id
+   * - Purpose: Update account details (name, email, phone, status) for the user.
+   * - Auth: Protected; should typically be self-update.
+   * - Body: { first_name?, last_name?, email?, phone_number?, status? }
+   */
   router.put('/update/:user_id', requireAuth, ctrl.update);
-  // Allow a user to update their password securely.
+
+  /**
+   * PUT /api/users/password/:user_id
+   * - Purpose: Change the user's password with verification of the current password.
+   * - Auth: Protected.
+   * - Body: { current_pw, new_pw }
+   */
   router.put('/password/:user_id', requireAuth, ctrl.changePassword);
-  // Disable a user's branch assignment (requires additional brand/branch parameters).
+
+  /**
+   * PUT /api/users/:user_id
+   * - Purpose: Soft-disable a user by updating their status/role associations.
+   * - Auth: Protected.
+   * - Params: { user_id }
+   * - Additional: May require brand_id/branch_id depending on business rules.
+   */
   router.put('/:user_id', requireAuth, ctrl.delete);
 
   return router;

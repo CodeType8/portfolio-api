@@ -12,7 +12,6 @@ module.exports = (sequelize) => {
     start_date: { type: DataTypes.DATEONLY },
     end_date: { type: DataTypes.DATEONLY },
     grade: { type: DataTypes.STRING(40) },
-    summary: { type: DataTypes.TEXT },
   }, {
     tableName: 'educations',
     timestamps: true,

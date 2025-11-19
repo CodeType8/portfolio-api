@@ -7,9 +7,7 @@ module.exports = (sequelize) => {
   return sequelize.define('Skill', {
     career_id: { type: DataTypes.INTEGER, allowNull: false },
     name: { type: DataTypes.STRING(120), allowNull: false },
-    level: { type: DataTypes.ENUM('beginner', 'intermediate', 'advanced', 'expert'), defaultValue: 'intermediate' },
     category: { type: DataTypes.STRING(80) },
-    years_experience: { type: DataTypes.INTEGER },
   }, {
     tableName: 'skills',
     timestamps: true,

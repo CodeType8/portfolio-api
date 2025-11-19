@@ -16,7 +16,6 @@ module.exports = {
       start_date: { type: Sequelize.DATEONLY },
       end_date: { type: Sequelize.DATEONLY },
       grade: { type: Sequelize.STRING(40) },
-      summary: { type: Sequelize.TEXT },
       created_at: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
       updated_at: { type: Sequelize.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') },
     });

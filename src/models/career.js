@@ -7,6 +7,8 @@ module.exports = (sequelize) => {
   return sequelize.define('Career', {
     user_id: { type: DataTypes.INTEGER, allowNull: false },
     headline: { type: DataTypes.STRING(150), allowNull: false },
+    name: { type: DataTypes.STRING(20), allowNull: false },
+    nickname: { type: DataTypes.STRING(20) },
     summary: { type: DataTypes.TEXT },
     location: { type: DataTypes.STRING(120) },
     website_url: { type: DataTypes.STRING },
