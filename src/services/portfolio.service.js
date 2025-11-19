@@ -6,10 +6,10 @@ module.exports = ({ models }) => {
   const getPortfolioByUser = (userId) => Career.findOne({
     where: { user_id: userId },
     include: [
-      { model: Experience, separate: true, order: [['start_date', 'DESC'], ['created_at', 'DESC']] },
-      { model: Project, separate: true, order: [['start_date', 'DESC'], ['created_at', 'DESC']] },
-      { model: Education, separate: true, order: [['start_date', 'DESC'], ['created_at', 'DESC']] },
-      { model: Skill, separate: true, order: [['level', 'DESC'], ['name', 'ASC']] },
+      { model: Experience, separate: true, order: [['start_date', 'DESC']] },
+      { model: Project, separate: true, order: [['start_date', 'DESC']] },
+      { model: Education, separate: true, order: [['start_date', 'DESC']] },
+      { model: Skill, separate: true, order: [['name', 'ASC']] },
     ],
   });
 

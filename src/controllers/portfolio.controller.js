@@ -32,7 +32,7 @@ module.exports = (deps) => {
   // Creates or updates the root career record for the authenticated user.
   const upsertCareer = async (req, res) => {
     try {
-      // Collect career-level fields from the incoming request body.
+      // Collect career fields from the incoming request body.
       const careerPayload = {
         headline: req.body.headline,
         summary: req.body.summary,
@@ -233,7 +233,6 @@ module.exports = (deps) => {
       const careerId = Number(req.params.career_id);
       const skillPayload = {
         name: req.body.name,
-        level: req.body.level,
         category: req.body.category,
         years_experience: req.body.years_experience,
       };
@@ -253,7 +252,6 @@ module.exports = (deps) => {
       const skillId = Number(req.params.skill_id);
       const skillPayload = {
         name: req.body.name,
-        level: req.body.level,
         category: req.body.category,
         years_experience: req.body.years_experience,
       };

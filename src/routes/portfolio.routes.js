@@ -21,7 +21,7 @@ module.exports = (deps) => {
    * - Auth: Protected.
    * - Params: { user_id }
    */
-  router.get('/user/:user_id', requireAuth, ctrl.getPortfolioByUser);
+  router.get('/user/:user_id', ctrl.getPortfolioByUser);
 
   /**
    * POST /api/portfolio
