@@ -12,7 +12,7 @@ module.exports = {
       },
       company_name: { type: Sequelize.STRING(150), allowNull: false },
       title: { type: Sequelize.STRING(150), allowNull: false },
-      location: { type: Sequelize.STRING(20), allowNull: false },
+      location: { type: Sequelize.TEXT, allowNull: false },
       employment_type: { type: Sequelize.STRING(80) },
       start_date: { type: Sequelize.DATEONLY, allowNull: false },
       end_date: { type: Sequelize.DATEONLY },

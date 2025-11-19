@@ -8,7 +8,7 @@ module.exports = (sequelize) => {
     career_id: { type: DataTypes.INTEGER, allowNull: false },
     company_name: { type: DataTypes.STRING(150), allowNull: false },
     title: { type: DataTypes.STRING(150), allowNull: false },
-    location: { type: DataTypes.STRING(20), allowNull: false },
+    location: { type: DataTypes.TEXT, allowNull: false },
     employment_type: { type: DataTypes.STRING(80) },
     start_date: { type: DataTypes.DATEONLY, allowNull: false },
     end_date: { type: DataTypes.DATEONLY },
