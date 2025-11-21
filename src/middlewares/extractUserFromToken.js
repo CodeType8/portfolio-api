@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
-const config = require('../config/config');
 
+// Parses the Authorization header and attaches a lightweight user object for logging.
 const extractUserFromToken = (req, res, next) => {
+  // Step 1: Pull the bearer token from the Authorization header, if present.
   const token = req.header('Authorization')?.split(' ')[1];
 
   if (!token) {
@@ -10,6 +11,7 @@ const extractUserFromToken = (req, res, next) => {
   }
 
   try {
+    // Step 2: Decode (not verify) the token to avoid blocking requests on expired tokens during logging.
     const decoded = jwt.decode(token);
     req.logUser = decoded
       ? {
@@ -18,6 +20,7 @@ const extractUserFromToken = (req, res, next) => {
         }
       : null;
   } catch (err) {
+    // Step 3: Fail gracefully if decoding breaks; downstream auth will enforce validity.
     req.logUser = null;
   }
 
