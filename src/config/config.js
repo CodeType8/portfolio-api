@@ -18,6 +18,7 @@ const config = {
   node: process.env.NODE_ENV,
   saltRound: process.env.ENCRYPTION_ROUND,
   invitepw: process.env.INVITE_PW,
+  gallerypw: process.env.GALLERY_PW,
   session: process.env.SESSION_KEY,
   url: {
     api: process.env.API_URL,
