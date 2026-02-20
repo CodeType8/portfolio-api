@@ -23,6 +23,8 @@ const config = {
   url: {
     api: process.env.API_URL,
     frontend: process.env.FRONTEND_URL,
+    // Local development origins are managed in code so .env does not need localhost entries.
+    local: ['http://localhost', 'http://127.0.0.1', 'http://[::1]'],
   },
   db: {
     host: process.env.DB_HOST,
