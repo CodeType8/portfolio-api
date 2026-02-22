@@ -5,13 +5,22 @@ module.exports = () => {
   /**
    * Generate access/refresh JWT tokens using the same algorithm and expiration policy as the existing auth login.
    */
+  const sanitizePayload = (payload) => {
+    const { exp, iat, nbf, ...rest } = payload;
+    return rest;
+  };
+
   const generateTokens = (payload, autoLogin = false) => {
-    const accessToken = jwt.sign(payload, config.jwt.secret, {
-      expiresIn: autoLogin ? config.jwt.expiration.long : config.jwt.expiration.short,
+    const cleanPayload = sanitizePayload(payload);
+
+    const accessToken = jwt.sign(cleanPayload, config.jwt.secret, {
+      expiresIn: autoLogin
+        ? config.jwt.expiration.long
+        : config.jwt.expiration.short,
       algorithm: 'HS256',
     });
 
-    const refreshToken = jwt.sign(payload, config.jwt.refresh, {
+    const refreshToken = jwt.sign(cleanPayload, config.jwt.refresh, {
       expiresIn: config.jwt.expiration.long,
       algorithm: 'HS256',
     });
